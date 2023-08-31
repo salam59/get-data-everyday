@@ -1,0 +1,59 @@
+In order to retrieve matching filings for your search query from the API, you send a HTTP POST request to the API with a JSON formatted payload (= request body). The payload is an object and always requires thequery object to be set. The query object contains your query_string.
+
+Let's say you're using an API to search for movies, and you want to find all movies directed by Christopher Nolan. You need to send a message to the API server to ask for these movies. This message is an HTTP POST request with a JSON payload (a structured message).
+
+Here's how the JSON payload might look like:
+
+json
+Copy code
+{
+    "query": {
+        "query_string": "director:Christopher Nolan"
+    }
+}
+In this example:
+
+The main part is the "query" object, which is required. It tells the server that you want to perform a search query.
+Inside the "query" object, there's a specific part called "query_string." This is where you put your search criteria.
+You're telling the server that you're interested in movies where the "director" field matches "Christopher Nolan."
+{
+    "query": {
+        "query_string": "director:Christopher Nolan"
+    }
+}
+
+So, you create this JSON message, package it as an HTTP POST request, and send it to the API server. The server understands that you're looking for movies directed by Christopher Nolan and sends back a response containing the matching movies.
+
+query (object) - your filter (or search) criteria. query should always contain a query_string object with your query definition. If you are familiar with ES, you can replace the query_string object with any other query type. Thequery_string is typed in Lucene syntax. This tutorial describes how to use Lucene syntax.
+Here is a basic query example to fetch 10-Q filings:
+"query": { "query_string": { "query": "formType:\"10-Q\"" } }
+
+You can filter by all parameters available in the response format (see here). Let's explore some examples:
+cik (string) - Remove trailing 0s in front of the CIK. For example, transform 0000320193 to320193.
+ticker (string) - Upper or lowercase ticker of the filing company, eg AAPL
+companyName (string) - The name of the filer. Fuzzy matching is supported. Providing only parts of the company name (eg "Apple" instead of "Apple Inc") returns results if matches exist.
+formType (string) - All formTypes listed here can be queried. formType can be any value listed in the Number column of the table.
+filedAt (string) - can be a date range or a single date. For example: filedAt:[2016-01-01 TO 2016-12-31]. You can find a date range query example here in our sandbox.
+Nested field search is also available. For example: "formType:\"10-K\" AND documentFormatFiles.type:\"EX-21\"" returns all 10-K filings where exhibit 21 ("EX-21") is attached.
+
+The maximum length of the query_string cannot exceed 3500 characters.
+
+from (string) - set the from property to the starting position of your query. from is used to paginate through results. For example, set from to 10 if you want to ignore the first 10 filings.
+size (string) — number of filings returned per request. For example, set size to 10 to return 10 filings per request. Maximum: 50. Default: 50.
+sort (array) — array of objects describing how to order the returned filings.
+
+# Quarter End Date	Filings Due
+# 2022-03-31	2022-05-16
+# 2022-06-30	2022-08-15
+# 2022-09-30	2022-11-14
+# 2022-12-31	2023-02-14
+# 2023
+# Quarter End Date	Filings Due
+# 2023-03-31	2023-05-15
+# 2023-06-30	2023-08-14
+# 2023-09-30	2023-11-14
+# 2023-12-31	2024-02-14
+
+
+
+
