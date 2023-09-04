@@ -54,6 +54,8 @@ sort (array) — array of objects describing how to order the returned filings.
 # 2023-09-30	2023-11-14
 # 2023-12-31	2024-02-14
 
+#while using celery always run the config file or related app in jango which is used for celery config
+
 
 
 

@@ -5,3 +5,6 @@ etc/
 Scripts/
 share/
 .env
+13f.ipynb
+celerybeat*
+*pycache*
